@@ -1,9 +1,10 @@
 /** @jsxImportSource atomico */
 /** @jsx h as _jsx, css as _css  */
-import { c, Props, useEffect, useRef, useState } from "atomico";
+import { c, css, Props, useEffect, useRef, useState } from "atomico";
 import { useRender } from "@atomico/hooks/use-render";
 import { useSlot } from "@atomico/hooks/use-slot";
 import { loadComponent } from "./lib";
+import styles from "./tailwind.css";
 
 function fedContainer({scope, url, module, fn, module_id, data}: Props<typeof fedContainer>) {
     const ref = useRef();
@@ -112,7 +113,7 @@ fedContainer.props = {
     }
 };
 
-fedContainer.styles = [];
+fedContainer.styles = [css`${styles}`];
 
 export const FedContainer = c(fedContainer);
 
