@@ -1,8 +1,8 @@
 import { Result } from "@badrap/result";
 
-const loadComponent = async (
+const loadModule = async (
   scope: string,
-  module: string
+  exportName: string
 ): Promise<Result<Module>> => {
   try {
     await __webpack_init_sharing__("default");
@@ -13,25 +13,25 @@ const loadComponent = async (
 
   if (!container) {
     return Result.err(
-      new Error("Failed to find module container loaded under specified scope")
+      new Error(`Failed to find module container loaded under specified scope ${scope}`)
     );
   }
   await container.init(__webpack_share_scopes__.default);
   try {
-    const factory = await container.get(module);
+    const factory = await container.get(exportName);
     const mod = factory();
     return Result.ok(mod);
   } catch (e) {
     return Result.err(
       new Error(
-        "Could not find module of that name within the loaded module container"
+        `Could not find module of name ${exportName} within the loaded federated container`
       )
     );
   }
 };
 
 export {
-    loadComponent
+    loadModule
 }
 
 
