@@ -6,7 +6,7 @@ import { useSlot } from "@atomico/hooks/use-slot";
 import { loadModule } from "./lib";
 import styles from "./tailwind.css";
 
-function fedContainer({scope, url, exportName, fn, moduleId, data}: Props<typeof fedContainer>) {
+function fedContainer({scope, url, integrity, exportName, fn, moduleId, data}: Props<typeof fedContainer>) {
     const ref = useRef();
     const slotContent = useSlot(ref);
     const [ready, setReady] = useState(false);
@@ -29,6 +29,11 @@ function fedContainer({scope, url, exportName, fn, moduleId, data}: Props<typeof
                 element.type = "text/javascript";
                 element.async = true;
                 element.id = `${moduleId}_mod` || "";
+                
+                if (integrity) {
+                    element.integrity = integrity;
+                    element.crossOrigin = "anonymous";
+                }
 
                 setReady(false);
                 setFailed(false);
@@ -112,6 +117,9 @@ fedContainer.props = {
         value: ""
     },
     fn: {
+        type: String
+    },
+    integrity: {
         type: String
     }
 };
