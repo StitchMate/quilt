@@ -61,6 +61,9 @@ const config: Configuration = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "fed.[name].js",
+    library: {
+        type: 'umd'
+    }
   },
   plugins: [
     new ModuleFederationPlugin({

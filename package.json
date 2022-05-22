@@ -1,10 +1,13 @@
 {
-  "name": "fed",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@seam-dev/quilt",
+  "version": "0.0.6",
+  "description": "A library and web-component that builds on top of Webpack Module Federation to provide dynamic widget loading",
+  "files": [
+    "./*"
+  ],
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "postbuild": "cp -r ./src/types ./dist/types && cp package.json ./dist"
   },
   "author": "",
   "license": "ISC",
@@ -28,5 +31,15 @@
     "@atomico/hooks": "^3.42.1",
     "@badrap/result": "^0.2.12",
     "atomico": "^1.59.0"
+  },
+  "exports": {
+    "./lib": {
+      "types": "./types/lib.d.ts",
+      "default": "./fed.lib.js"
+    },
+    "./component": {
+      "types": "./types/component.d.ts",
+      "default": "./fed.wc.js"
+    }
   }
 }

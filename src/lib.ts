@@ -11,7 +11,7 @@ const loadModule = async (
   }
   const container: ModuleContainer | undefined = (window as any)[scope];
 
-  if (!container) {
+  if (!container || !Object.keys(container).includes("init")) {
     return Result.err(
       new Error(`Failed to find module container loaded under specified scope ${scope}`)
     );

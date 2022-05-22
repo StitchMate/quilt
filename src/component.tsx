@@ -11,7 +11,6 @@ function fedContainer({
   integrity,
   exportName,
   fn,
-  moduleId,
   data,
 }: Props<typeof fedContainer>) {
   const ref = useRef();
@@ -25,14 +24,13 @@ function fedContainer({
     if (
       scope?.length == 0 ||
       url?.length == 0 ||
-      exportName?.length == 0 ||
-      moduleId?.length == 0
+      exportName?.length == 0
     ) {
       setReady(false);
       setFailed(true);
       missingProps = true;
       console.error(
-        "Please ensure the following properties are defined with a non-null value: scope, url, export-name, module-id"
+        "Please ensure the following properties are defined with a non-null value: scope, url, export-name"
       );
     }
     let federate = async (missingProps: boolean) => {
@@ -48,7 +46,7 @@ function fedContainer({
         element.src = url || "";
         element.type = "text/javascript";
         element.async = true;
-        element.id = `${moduleId}_mod` || "";
+        element.id = `${scope}_mod` || "";
 
         if (integrity) {
           element.integrity = integrity;
@@ -79,6 +77,7 @@ function fedContainer({
         let mod = await loadModule(scope || "", exportName || "");
 
         if (mod.isErr) {
+          setFailed(true);
           console.error(mod.error);
         } else {
           let m = mod.unwrap();
@@ -89,15 +88,16 @@ function fedContainer({
             console.error(
               `A function with name ${fn} not found in the federated module`
             );
+            setFailed(true);
             return;
           }
 
           if (fn) {
-            m[fn](moduleId, data);
+            m[fn](scope, data);
           }
         }
 
-        let element = document.getElementById(`${moduleId}_mod` || "");
+        let element = document.getElementById(`${scope}_mod` || "");
         document.head.removeChild(element as Node);
 
         return () => {
@@ -107,7 +107,7 @@ function fedContainer({
     };
 
     federate(missingProps);
-  }, [url, moduleId, module, scope, ref, ready]);
+  }, [url, module, scope, ref, ready]);
 
   useEffect(
     () => () => {
@@ -116,7 +116,7 @@ function fedContainer({
     []
   );
 
-  useRender(() => <div slot="internal" id={moduleId}></div>);
+  useRender(() => <div slot="internal" id={scope}></div>);
 
   return (
     <host shadowDom {...loadedModule}>
@@ -143,10 +143,6 @@ fedContainer.props = {
     type: String,
     value: "",
   },
-  moduleId: {
-    type: String,
-    value: "",
-  },
   fn: {
     type: String,
   },
@@ -157,4 +153,4 @@ fedContainer.props = {
 
 export const FedContainer = c(fedContainer);
 
-customElements.define("seam-fed", FedContainer);
+customElements.define("seam-quilt", FedContainer);
