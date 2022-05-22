@@ -6,7 +6,7 @@ import { useSlot } from "@atomico/hooks/use-slot";
 import { loadModule } from "./lib";
 
 function fedContainer({
-  scope,
+  moduleName,
   url,
   integrity,
   exportName,
@@ -21,12 +21,12 @@ function fedContainer({
 
   useEffect(() => {
     let missingProps = false;
-    if (scope?.length == 0 || url?.length == 0 || exportName?.length == 0) {
+    if (moduleName?.length == 0 || url?.length == 0 || exportName?.length == 0) {
       setReady(false);
       setFailed(true);
       missingProps = true;
       console.error(
-        "Please ensure the following properties are defined with a non-null value: scope, url, export-name"
+        "Please ensure the following properties are defined with a non-null value: module-name, url, export-name"
       );
     }
     let federate = async (missingProps: boolean) => {
@@ -42,7 +42,7 @@ function fedContainer({
         element.src = url || "";
         element.type = "text/javascript";
         element.async = true;
-        element.id = `${scope}_mod` || "";
+        element.id = `${moduleName}_mod` || "";
 
         if (integrity) {
           element.integrity = integrity;
@@ -70,7 +70,7 @@ function fedContainer({
           (slotContent[0] as Element).innerHTML.length == 0) &&
         !missingProps
       ) {
-        let mod = await loadModule(scope || "", exportName || "");
+        let mod = await loadModule(moduleName || "", exportName || "");
 
         if (mod.isErr) {
           setFailed(true);
@@ -89,11 +89,11 @@ function fedContainer({
           }
 
           if (fn) {
-            m[fn](scope, data);
+            m[fn](moduleName, data);
           }
         }
 
-        let element = document.getElementById(`${scope}_mod` || "");
+        let element = document.getElementById(`${moduleName}_mod` || "");
         document.head.removeChild(element as Node);
 
         return () => {
@@ -103,16 +103,16 @@ function fedContainer({
     };
 
     federate(missingProps);
-  }, [url, module, scope, ref, ready]);
+  }, [url, module, moduleName, ref, ready]);
 
   useEffect(
     () => () => {
-      (window as any)[scope || ""] = undefined;
+      (window as any)[moduleName || ""] = undefined;
     },
     []
   );
 
-  useRender(() => <div slot="internal" id={scope}></div>);
+  useRender(() => <div slot="internal" id={moduleName}></div>);
 
   return (
     <host shadowDom {...loadedModule}>
@@ -124,7 +124,7 @@ function fedContainer({
 }
 
 fedContainer.props = {
-  scope: {
+  moduleName: {
     type: String,
     value: "",
   },

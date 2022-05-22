@@ -1,7 +1,7 @@
 import { Result } from "@badrap/result";
 
 const loadModule = async (
-  scope: string,
+  moduleName: string,
   exportName: string
 ): Promise<Result<Module>> => {
   try {
@@ -9,11 +9,11 @@ const loadModule = async (
   } catch (e) {
     return Result.err(new Error("We failed to initialize the sharing scopes"));
   }
-  const container: ModuleContainer | undefined = (window as any)[scope];
+  const container: ModuleContainer | undefined = (window as any)[moduleName];
 
   if (!container || !Object.keys(container).includes("init")) {
     return Result.err(
-      new Error(`Failed to find module container loaded under specified scope ${scope}`)
+      new Error(`Failed to find module container loaded under specified scope ${moduleName}`)
     );
   }
   await container.init(__webpack_share_scopes__.default);
