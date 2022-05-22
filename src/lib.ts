@@ -7,13 +7,13 @@ const loadModule = async (
   try {
     await __webpack_init_sharing__("default");
   } catch (e) {
-    return Result.err(new Error("We failed to initialize the sharing scopes"));
+    return Result.err(new Error("We failed to initialize the sharing scope(s)"));
   }
   const container: ModuleContainer | undefined = (window as any)[moduleName];
 
   if (!container || !Object.keys(container).includes("init")) {
     return Result.err(
-      new Error(`Failed to find module container loaded under specified scope ${moduleName}`)
+      new Error(`Failed to find module container loaded under specified module name: ${moduleName}`)
     );
   }
   await container.init(__webpack_share_scopes__.default);
