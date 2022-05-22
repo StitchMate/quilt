@@ -3,10 +3,6 @@ import { Configuration } from "webpack";
 import TerserWebpackPlugin from "terser-webpack-plugin";
 const ModuleFederationPlugin =
   require("webpack").container.ModuleFederationPlugin;
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const tailwindcss = require("tailwindcss");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-import autoprefixer from "autoprefixer";
 
 const config: Configuration = {
   entry: {
@@ -60,7 +56,6 @@ const config: Configuration = {
           },
         },
       }),
-      new CssMinimizerPlugin(),
     ],
   },
   output: {
