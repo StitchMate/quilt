@@ -44,7 +44,7 @@ const config: Configuration = {
   resolve: {
     extensions: [".tsx", ".jsx", ".ts", ".js"],
   },
-  devtool: "source-map",
+  devtool: undefined,
   optimization: {
     minimize: true,
     minimizer: [
