@@ -3,7 +3,9 @@ import { Configuration } from "webpack";
 import TerserWebpackPlugin from "terser-webpack-plugin";
 const ModuleFederationPlugin =
   require("webpack").container.ModuleFederationPlugin;
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const tailwindcss = require("tailwindcss");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 import autoprefixer from "autoprefixer";
 
 const config: Configuration = {
@@ -33,7 +35,7 @@ const config: Configuration = {
               [
                 "@babel/plugin-transform-runtime",
                 {
-                  regenerator: true,
+                  regenerator: false,
                 },
               ],
               "@babel/plugin-syntax-dynamic-import",
@@ -41,28 +43,28 @@ const config: Configuration = {
           },
         },
       },
-      {
-        test: /\.css?$/,
-        use: [
-          // {
-          //     loader: "style-loader"
-          // },
-          {
-            loader: "css-loader",
-            options: {
-              exportType: "string",
-            },
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              postcssOptions: {
-                plugins: [[autoprefixer], [tailwindcss]],
-              },
-            },
-          },
-        ],
-      },
+    //   {
+    //     test: /\.css?$/,
+    //     use: [
+    //       // {
+    //       //     loader: "style-loader"
+    //       // },
+    //       {
+    //         loader: "css-loader",
+    //         options: {
+    //           exportType: "string",
+    //         },
+    //       },
+    //       {
+    //         loader: "postcss-loader",
+    //         options: {
+    //           postcssOptions: {
+    //             plugins: [[autoprefixer], [tailwindcss]],
+    //           },
+    //         },
+    //       },
+    //     ],
+    //   },
     ],
   },
   resolve: {
@@ -70,8 +72,18 @@ const config: Configuration = {
   },
   devtool: "source-map",
   optimization: {
-    minimize: false,
-    minimizer: [new TerserWebpackPlugin()],
+    minimize: true,
+    minimizer: [
+      new TerserWebpackPlugin({
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+      }),
+      new CssMinimizerPlugin(),
+    ],
   },
   output: {
     path: path.resolve(__dirname, "dist"),
