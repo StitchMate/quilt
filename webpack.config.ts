@@ -35,7 +35,7 @@ const config: Configuration = {
               [
                 "@babel/plugin-transform-runtime",
                 {
-                  regenerator: false,
+                  regenerator: true,
                 },
               ],
               "@babel/plugin-syntax-dynamic-import",
@@ -43,28 +43,6 @@ const config: Configuration = {
           },
         },
       },
-    //   {
-    //     test: /\.css?$/,
-    //     use: [
-    //       // {
-    //       //     loader: "style-loader"
-    //       // },
-    //       {
-    //         loader: "css-loader",
-    //         options: {
-    //           exportType: "string",
-    //         },
-    //       },
-    //       {
-    //         loader: "postcss-loader",
-    //         options: {
-    //           postcssOptions: {
-    //             plugins: [[autoprefixer], [tailwindcss]],
-    //           },
-    //         },
-    //       },
-    //     ],
-    //   },
     ],
   },
   resolve: {

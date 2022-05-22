@@ -157,4 +157,4 @@ fedContainer.props = {
 
 export const FedContainer = c(fedContainer);
 
-customElements.define("seam:fed", FedContainer);
+customElements.define("seam-fed", FedContainer);
