@@ -1,6 +1,6 @@
 {
   "name": "@seam-dev/quilt",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A library and web-component that builds on top of Webpack Module Federation to provide dynamic widget loading",
   "files": [
     "./*"

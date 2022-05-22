@@ -21,11 +21,7 @@ function fedContainer({
 
   useEffect(() => {
     let missingProps = false;
-    if (
-      scope?.length == 0 ||
-      url?.length == 0 ||
-      exportName?.length == 0
-    ) {
+    if (scope?.length == 0 || url?.length == 0 || exportName?.length == 0) {
       setReady(false);
       setFailed(true);
       missingProps = true;
@@ -147,6 +143,9 @@ fedContainer.props = {
     type: String,
   },
   integrity: {
+    type: String,
+  },
+  class: {
     type: String,
   },
 };
