@@ -3,7 +3,7 @@
 import { c, Props, useEffect, useRef, useState } from "atomico";
 import { useRender } from "@atomico/hooks/use-render";
 import { useSlot } from "@atomico/hooks/use-slot";
-import { loadModule } from "./lib";
+import { loadModule, loadFile } from "./lib";
 
 function fedContainer({
   moduleName,
@@ -21,7 +21,11 @@ function fedContainer({
 
   useEffect(() => {
     let missingProps = false;
-    if (moduleName?.length == 0 || url?.length == 0 || exportName?.length == 0) {
+    if (
+      moduleName?.length == 0 ||
+      url?.length == 0 ||
+      exportName?.length == 0
+    ) {
       setReady(false);
       setFailed(true);
       missingProps = true;
@@ -37,32 +41,22 @@ function fedContainer({
           (slotContent[0] as Element).innerHTML.length == 0) &&
         !missingProps
       ) {
-        const element = document.createElement("script");
-
-        element.src = url || "";
-        element.type = "text/javascript";
-        element.async = true;
-        element.id = `${moduleName}_mod` || "";
-
-        if (integrity) {
-          element.integrity = integrity;
-          element.crossOrigin = "anonymous";
-        }
-
         setReady(false);
         setFailed(false);
 
-        element.onload = () => {
-          setReady(true);
-          setFailed(false);
-        };
-
-        element.onerror = () => {
-          setReady(false);
-          setFailed(true);
-        };
-
-        document.head.appendChild(element);
+        loadFile(
+          url,
+          moduleName,
+          integrity,
+          () => {
+            setReady(true);
+            setFailed(false);
+          },
+          (onerror = () => {
+            setReady(false);
+            setFailed(true);
+          })
+        );
       } else if (
         ready &&
         slotContent &&

@@ -1,5 +1,25 @@
 import { Result } from "@badrap/result";
 
+const loadFile = async (url, moduleName, integrity, onload, onerror) => {
+  const element = document.createElement("script");
+  
+  element.src = url || "";
+  element.type = "text/javascript";
+  element.async = true;
+  element.id = `${moduleName}_mod` || "";
+
+  if (integrity) {
+    element.integrity = integrity;
+    element.crossOrigin = "anonymous";
+  }
+
+  element.onload = onload;
+
+  element.onerror = onerror;
+
+  document.head.appendChild(element);
+}
+
 const loadModule = async (
   moduleName: string,
   exportName: string
@@ -31,7 +51,8 @@ const loadModule = async (
 };
 
 export {
-    loadModule
+    loadModule,
+    loadFile
 }
 
 
