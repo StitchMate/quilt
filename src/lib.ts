@@ -1,6 +1,6 @@
 import { Result } from "@badrap/result";
 
-const loadFile = async (url, moduleName, integrity, onload, onerror) => {
+const loadFile = async (url, moduleName, integrity = undefined, onload = undefined, onerror = undefined) => {
   const element = document.createElement("script");
   
   element.src = url || "";

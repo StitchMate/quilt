@@ -86,13 +86,6 @@ function fedContainer({
             m[fn](moduleName, data);
           }
         }
-
-        let element = document.getElementById(`${moduleName}_mod` || "");
-        document.head.removeChild(element as Node);
-
-        return () => {
-          document.head.removeChild(element as Node);
-        };
       }
     };
 
