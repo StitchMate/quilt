@@ -15,10 +15,12 @@ const loadFile = async (url, moduleName, integrity, onload, onerror) => {
 
   element.onload = () => {
     document.head.removeChild(element);
-    onload();
+    if (onload) {
+      onload();
+    }
   };
 
-  element.onerror = onerror;
+  element.onerror = onerror ? onerror: undefined;
 
   document.head.appendChild(element);
 }
