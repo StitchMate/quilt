@@ -3,7 +3,8 @@
   "version": "0.0.11",
   "description": "A library and web-component that builds on top of Webpack Module Federation to provide dynamic widget loading",
   "files": [
-    "./*"
+    "*.js",
+    "types"
   ],
   "scripts": {
     "build": "webpack",
