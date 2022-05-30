@@ -13,7 +13,10 @@ const loadFile = async (url, moduleName, integrity, onload, onerror) => {
     element.crossOrigin = "anonymous";
   }
 
-  element.onload = onload;
+  element.onload = () => {
+    document.head.removeChild(element);
+    onload();
+  };
 
   element.onerror = onerror;
 
